@@ -1,0 +1,50 @@
+Bandwidth RequirementsAnchor link for: bandwidth requirements
+What are the bandwidth requirements for running a BigBlueButton serverAnchor link for: what are the bandwidth requirements for running a bigbluebutton server
+You’ll need good upstream and downstream bandwidth from the server. We recommend 1 Gbits/second bandwidth in both directions.
+
+When sharing a webcam as a moderator, BigBlueButton lets you select 320x240, 640x480, or 1280x720. For bandwidth calculations, each resolution corresponds (roughly) to a .25 Mbits/sec, 0.40 Mbits/sec, and 0.60 Mbits/sec video stream respectively.
+
+For example, if you have a room with 5 users, each sharing their webcam at 320x240, then you can calculate the bandwidth usage as follows:
+
+Y = .25 Mbits/sec
+W = amount of webcams that are streaming
+U = amount of users that are watching
+For calculations:
+
+server incoming bandwidth: W*Y
+server outgoing bandwidth: W*(U-1)*Y (minus one since a broadcaster does not have to subscribe to his own stream)
+For example, with 5 users in a room with 5 webcams streaming, the bandwidth calculation is as follows:
+
+in: 5*.25 = 1.25 Mbits/sec incoming bandwidth needed to the server, or 3600*1.25 = 4.5 GBits/hr
+out: 5*(5-1)*.25 = 5 Mbits/sec outgoing bandwidth needed from the server, or 3600*5 = 18 Gbits/hr
+If you’d have a typical classroom situation one presenter broadcasting their webcam to 30 remote students, the calculation is as follows:
+
+in: 1*.25 = .25 Mbits/sec incoming, or 3600*.25 = 0.9 GBits/hr
+out: 1*(30-1)*.25 = 7.25 Mbits/sec outgoing, or 3600*7.25 = 26.1 GBits/hr
+Large “cafe-style chatroom”: 20 viewers, 8 people broadcasting with a webcam:
+
+in: 8*.25 = 2 Mbits/sec incoming, or 3600*2 = 7.2 GBits/hr
+out: 8*(20-1)*.25 = 38 Mbits/sec outgoing, or 3600* = 136.8 Gbits/hr
+Sharing slides takes almost no bandwidth beyond the initial uploading/downloading of slides. When the presenter clicks to show the next slide, the viewers receive a “move next slide” command in their BigBlueButton client, and they load the next slide from the local cache. Chat also takes almost no bandwidth.
+
+Screen sharing sharing takes the most bandwidth. The actual bandwidth for desktop sharing depends on the size of the area chosen by the presenter (full screen and region) and how often their screen updates. At the low end, if the presenter’s screen is largely idle, the screen sharing application will transmit about 0.2 Mbits/sec; at the high end, if the presenter’s screen is updating frequently, the BigBlueButton server could transmit 1.0 Mbits/sec. For a session with N users, BigBlueButton server would also transmit N desktop sharing streams (the presenter gets a stream as well for their Screen Sharing Preview window).
+
+A VoIP connection to the BigBlueButton server takes roughly 0.04 Mbits/sec receiving and 0.04 Mbits/sec transmitting for each user. The bandwidth for VoIP grows linearly with number of users. For example, if there are 20 students in a classroom, then the bandwidth requirements for the server to support VoIP is 20 * 0.04 Mbits/sec = 0.8 Mbits/sec. If the user joins as Listen Only, they only receive audio (not transmit it).
+
+From the perspective of the user’s bandwidth needs, if a student is broadcasting their webcam and microphone they require a minimum (roughly) 0.3 Mbits/sec (.25 + .04) upstream bandwidth. If the student is in a session with four other people that are all broadcasting their webcams as well, the student will require the roughly 1 Mbits/sec incoming bandwidth for the 4 *0.25 = 1 Mbits/sec incoming webcams and 0.04 Mbits/sec for the incoming audio.
+
+The BigBlueButton server will lower the bandwidth to a user if their bandwidth is insufficient to receive all stream. For example, in the scenario above where there are 5 students in a session, each sharing a webcam, if 4 students have sufficient bandwidth to receive all incoming webcam streams, their clients will show roughly the same quality of video. If one of the students is on a lower bandwidth, then they will get less frequent updates on the video streams and may get lower quality of audio. The user who is on lower bandwidth does not affect the streaming to other users.
+
+What are the minimum bandwidth requirements for a userAnchor link for: what are the minimum bandwidth requirements for a user
+For viewers (students), we recommend users have (at least) 0.5 Mbits/sec – which is 500 Kbits/sec – upstream bandwidth, and (at least) 1 Mbits/sec download bandwidth. The upstream bandwidth is the amount of bandwidth their computer has available to transmit data to the BigBlueButton server.
+
+These are not hard and fast numbers, as it depends on the activity of the viewer. If the viewer is not broadcasting any webcam, the amount of upstream bandwidth used would be less than 0.5 Mbits/sec.
+
+A good way for users to check their bandwidth is to visit speedtest.net. The results from speedtest.net give the user’s actual bandwidth. This actual number is important because a user may report that their ISP provides them 0.5 Mbits/sec upstream bandwidth; however, speedtest.net may report an actual number that is much lower. The difference may be throttling by the ISP and background activity on their computer (such as background downloads, file sharing clients, etc).
+
+For presenters, we recommend as much upstream bandwidth as possible. For example, if the presenter shares their desktop, then BigBlueButton’s desktop sharing will attempt to publish their desktop updates as quickly as possible to the server.
+
+Is wired connection better than wirelessAnchor link for: is wired connection better than wireless
+Yes. A user may have very good experience with wireless internet, but if others hear their audio as broken or choppy, that user can either move closer to the wireless base station, try a different wireless network, or (best) connect directly to a wired connection.
+
+Using public WiFi is not always best. It may be OK for surfing the web, but the latency and packet loss might be insufficient for real-time transmission of audio or video.
